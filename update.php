@@ -37,11 +37,13 @@ if (isset($_POST['submit_update'])) {
 <body>
     <div class="container pt-5">
         <h1>Form Update Barang</h1>
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?= $update['id']; ?>">
+            <input type="hidden" name="gambarLama" value="<?= $update['gambar']; ?>">
             <div class="mb-3">
                 <label for="gambar" class="form-label">Foto</label>
-                <input name="gambar" type="text" class="form-control" id="gambar" aria-describedby="emailHelp" required value="<?= $update['gambar']; ?>">
+                <img src="img/<?= $update['gambar']; ?>" width="40" alt="">
+                <input name="gambar" type="file" class="form-control" id="gambar" aria-describedby="emailHelp" value="<?= $update['gambar']; ?>">
             </div>
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama</label>

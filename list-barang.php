@@ -27,7 +27,7 @@ if (isset($_POST["search"])) {
         <br>
         <form action="" method="post">
             <div class="mb-3">
-                <input name="keyword" type="text" class="form-control-sm w-40 col-sm-4" id="search" aria-describedby="emailHelp"  autofocus autocomplete placeholder="masukkan keyword pencarian...">
+                <input name="keyword" type="text" class="form-control-sm w-40 col-sm-4" id="search" aria-describedby="emailHelp"  autofocus autocompletegit placeholder="masukkan keyword pencarian...">
                 <input type="submit" class="btn btn-primary" name="search" value="search">
 
             </div>

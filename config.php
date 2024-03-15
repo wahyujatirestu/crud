@@ -34,7 +34,10 @@ function query ($sql) {
 function addData ($data) {
     global $db;
 
-    $gambar = htmlspecialchars($data['gambar']);
+    $gambar = upload();
+    if (!$gambar) {
+        return false;
+    }
     $nama = htmlspecialchars($data['nama']);
     $deskripsi = htmlspecialchars($data['deskripsi']);
     $harga = htmlspecialchars($data['harga']);    
@@ -46,6 +49,55 @@ function addData ($data) {
 
     return mysqli_affected_rows($db);
 }
+
+//
+
+    function upload() {
+        $namaFile = $_FILES['gambar']['name'];
+        $ukuranFile = $_FILES['gambar']['size'];
+        $error = $_FILES['gambar']['error'];
+        $tmpName = $_FILES['gambar']['tmp_name'];
+
+        if ($error === 4) {
+            echo "<script>
+                        alert('Pilih gambar/foto terlebih dahulu!');
+                        </script>";
+                
+            return false;
+        }
+
+        // cek apakah yang di upload adalah gambar
+
+        $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+        $ekstensiGambar = explode('.', $namaFile);
+        $ekstensiGambar = strtolower(end($ekstensiGambar));
+
+        if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+            echo "<script>
+                        alert('Yang Anda upload bukanlah file gambar/foto. Silahkan pilih dokumen gambar/foto dengan benar');
+                        </script>";
+                
+            return false;
+        }
+
+        if ($ukuranFile > 1000000) {
+            echo "<script>
+            alert('Ukuran file terlalu besar. Silahkan kompres file terlebih dahulu atau pilih file yang lain');
+            </script>";
+    
+            return false;
+        }
+
+        // lolos pengecekan siap upload
+        // generate nama baru
+        $namaFileBaru = uniqid();
+        $namaFileBaru .= '.';
+        $namaFileBaru .= $ekstensiGambar;
+        move_uploaded_file($tmpName, 'img/' . $namaFile);
+
+        return $namaFile;
+
+    }
 
 
 //function hapus
@@ -68,7 +120,15 @@ function updateData ($data) {
     $nama = htmlspecialchars($data['nama']);
     $deskripsi = htmlspecialchars($data['deskripsi']);
     $harga = htmlspecialchars($data['harga']); 
+    $gambarLama = htmlspecialchars($data['gambarLama']); 
     
+    // cek apakah user pilih gambar baru atau tidak
+
+    if ($_FILES['gambar']['error'] === 4) {
+        $gambar = $gambarLama;
+    }   else {
+        $gambar = upload();
+    }
     
     
 
